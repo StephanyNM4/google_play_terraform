@@ -15,3 +15,21 @@ resource "azurerm_mssql_database" "db" {
     sku_name = "S0"
     tags = var.tags
 }
+
+resource "azurerm_redis_cache" "db-cache-redis" {
+    name                 = "db-redis-${var.project}1"
+    location             = var.location
+    resource_group_name  = azurerm_resource_group.rg.name
+
+    capacity             = 1 //250MB
+    family               = "C" //familia del sku -> C = Basic/Standard
+    sku_name             = "Basic"
+
+    non_ssl_port_enabled = true   //facilitar pruebas sin cifrado
+    minimum_tls_version  = "1.2"  //establecer el nivel mínimo de seguridad TLS (Transport Layer Security)
+
+    redis_configuration {
+    }
+
+    tags = var.tags
+}
